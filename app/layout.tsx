@@ -1,29 +1,20 @@
-import type React from "react"
-import { WalletProvider } from "@/hooks/use-wallet"
-import { Toaster } from "@/components/ui/toaster"
-import "@/app/globals.css"
+import type { Metadata } from 'next'
+import './globals.css'
+
+export const metadata: Metadata = {
+  title: 'v0 App',
+  description: 'Created with v0',
+  generator: 'v0.dev',
+}
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
     <html lang="en">
-      <body>
-        <WalletProvider>
-          {children}
-          <Toaster />
-        </WalletProvider>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
-
-
-
-import './globals.css'
-
-export const metadata = {
-      generator: 'v0.dev'
-    };

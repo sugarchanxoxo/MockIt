@@ -1,103 +1,225 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { HeroSection } from "@/components/hero-section"
-import { AiGeneratedExamples } from "@/components/ai-generated-examples"
-import { CreationSteps } from "@/components/creation-steps"
-import { RecentCreations } from "@/components/recent-creations"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Sparkles, Clock, Zap, History } from "lucide-react"
+import { ArrowRight, Cpu, Database, Wallet, Sparkles, Code, Layers } from "lucide-react"
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col">
-      <HeroSection />
-
-      {/* AI-Generated Examples */}
-      <section className="container mx-auto py-12 px-4">
-        <div className="flex flex-col items-center justify-center text-center mb-10">
-          <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="h-5 w-5 text-purple-500" />
-            <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200 font-medium">
-              AI-Powered
+    <div className="flex flex-col min-h-screen">
+      {/* Hero Section */}
+      <div className="relative w-full bg-gradient-to-br from-purple-900 via-violet-800 to-purple-700 text-white">
+        <div className="container mx-auto py-20 px-4">
+          <div className="flex flex-col items-center justify-center space-y-6 text-center max-w-4xl mx-auto">
+            <Badge
+              className="px-4 py-1.5 text-lg bg-white/20 text-white border-none backdrop-blur-sm"
+              variant="outline"
+            >
+              Fast & Fun NFT Creation
             </Badge>
-          </div>
-          <h2 className="text-3xl font-bold tracking-tight mb-4">Create NFTs in Seconds with AI</h2>
-          <p className="text-muted-foreground max-w-2xl">
-            Our AI analyzes on-chain trends and generates unique NFTs that stand out in the marketplace. No design
-            skills needed!
-          </p>
-        </div>
-
-        <AiGeneratedExamples />
-
-        <div className="mt-10 text-center">
-          <Link href="/generate">
-            <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
-              <Sparkles className="mr-2 h-4 w-4" />
-              Create Your NFT Now
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="bg-slate-50 py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight mb-4">Fast, Fun, and Powered by AI</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Create unique NFTs in just a few clicks and track your creation history
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Create AI-Generated NFTs</h1>
+            <p className="text-xl md:text-2xl text-white/80 max-w-3xl">
+              Generate unique NFTs with AI, track their history on-chain, and build upon existing creations. Deploy on
+              Polygon and Base with flexible payment options.
             </p>
-          </div>
-
-          <CreationSteps />
-        </div>
-      </section>
-
-      {/* Track Your NFT History */}
-      <section className="container mx-auto py-16 px-4">
-        <div className="flex items-center justify-between mb-10">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <History className="h-5 w-5 text-indigo-500" />
-              <Badge variant="outline" className="bg-indigo-50 text-indigo-700 border-indigo-200 font-medium">
-                Track Your Creations
-              </Badge>
+            <div className="flex flex-col sm:flex-row gap-4 mt-8">
+              <Button size="lg" className="bg-white text-purple-900 hover:bg-white/90" asChild>
+                <Link href="/create">
+                  Create NFT <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" asChild>
+                <Link href="/explore">Explore Gallery</Link>
+              </Button>
             </div>
-            <h2 className="text-3xl font-bold tracking-tight">Your NFT Creation History</h2>
-            <p className="text-muted-foreground mt-2 max-w-2xl">
-              Keep track of all your AI-generated NFTs and their performance on the blockchain
-            </p>
           </div>
-
-          <Link href="/history">
-            <Button variant="outline">
-              View All History
-              <Clock className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
         </div>
 
-        <RecentCreations />
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-gradient-to-r from-purple-700 to-indigo-700 py-16 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Create Your First AI-Generated NFT?</h2>
-          <p className="text-lg text-purple-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of creators who are using AI to generate unique NFTs based on blockchain trends. No design
-            skills required!
-          </p>
-          <Link href="/generate">
-            <Button size="lg" className="bg-white text-purple-700 hover:bg-purple-50">
-              <Zap className="mr-2 h-4 w-4" />
-              Start Creating Now
-            </Button>
-          </Link>
+        {/* Decorative elements */}
+        <div className="absolute top-1/2 left-10 transform -translate-y-1/2 opacity-10">
+          <Sparkles className="h-64 w-64" />
         </div>
-      </section>
-    </main>
+        <div className="absolute bottom-10 right-10 opacity-10">
+          <Code className="h-48 w-48" />
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="container mx-auto py-16 px-4">
+        <div className="space-y-16">
+          {/* Key Features Section */}
+          <section>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Key Features</h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Our platform offers everything you need to create, manage, and trade AI-generated NFTs
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <FeatureCard
+                icon={<Database className="h-12 w-12" />}
+                title="On-Chain History"
+                description="Track the complete history of NFT generation including image data, AI prompts, and creator information."
+              />
+              <FeatureCard
+                icon={<Cpu className="h-12 w-12" />}
+                title="AI Collaboration"
+                description="Contribute to and build upon existing NFTs using our generative AI technology."
+              />
+              <FeatureCard
+                icon={<Wallet className="h-12 w-12" />}
+                title="Flexible Transfers"
+                description="Export NFTs outside the platform by paying gas fees with USDC or ETH."
+              />
+            </div>
+          </section>
+
+          {/* Technical Details Section */}
+          <section>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Technical Implementation</h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Built with cutting-edge blockchain technology
+              </p>
+            </div>
+
+            <Card className="border-2">
+              <CardContent className="pt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="border rounded-lg p-6 flex items-start space-x-4">
+                    <div className="bg-purple-100 p-3 rounded-full">
+                      <Layers className="h-8 w-8 text-purple-700" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-medium mb-2">Contract Standard</h3>
+                      <p className="text-muted-foreground">
+                        ERC-1155 multi-token standard for efficient batch operations and reduced gas costs
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="border rounded-lg p-6 flex items-start space-x-4">
+                    <div className="bg-purple-100 p-3 rounded-full">
+                      <Code className="h-8 w-8 text-purple-700" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-medium mb-2">Deployment</h3>
+                      <p className="text-muted-foreground">
+                        MultiBaas SDK for seamless contract deployment and management
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="border rounded-lg p-6 flex items-start space-x-4">
+                    <div className="bg-purple-100 p-3 rounded-full">
+                      <Database className="h-8 w-8 text-purple-700" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-medium mb-2">Data Storage</h3>
+                      <p className="text-muted-foreground">
+                        PNG data, AI prompts, and user info tracked by contract address
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="border rounded-lg p-6 flex items-start space-x-4">
+                    <div className="bg-purple-100 p-3 rounded-full">
+                      <Wallet className="h-8 w-8 text-purple-700" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-medium mb-2">Payment Options</h3>
+                      <p className="text-muted-foreground">Transaction fees payable with USDC (Circle) or ETH</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Supported Chains Section */}
+          <section>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Supported Chains</h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Deploy your NFTs on these high-performance blockchains
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <ChainCard
+                name="Polygon"
+                description="Fast and low-cost transactions with high security. Perfect for NFT projects with high volume."
+                isTestnet={true}
+                icon="/placeholder.svg?height=80&width=80"
+              />
+              <ChainCard
+                name="Base"
+                description="Ethereum L2 with optimistic rollups for scalability. Built for the future of web3."
+                isTestnet={false}
+                icon="/placeholder.svg?height=80&width=80"
+              />
+            </div>
+          </section>
+
+          {/* CTA Section */}
+          <section className="bg-purple-50 rounded-2xl p-10 text-center">
+            <h2 className="text-3xl font-bold mb-4">Ready to Create Your NFT?</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+              Start generating unique AI-powered NFTs in minutes
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button size="lg" asChild>
+                <Link href="/create">
+                  Create NFT <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/deploy">Deploy Contract</Link>
+              </Button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function FeatureCard({ icon, title, description }) {
+  return (
+    <Card className="border-2 transition-all hover:shadow-md hover:-translate-y-1">
+      <CardHeader className="pb-2">
+        <div className="mb-4 text-primary">{icon}</div>
+        <CardTitle className="text-2xl">{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-muted-foreground">{description}</p>
+      </CardContent>
+    </Card>
+  )
+}
+
+function ChainCard({ name, description, isTestnet, icon }) {
+  return (
+    <Card className="border-2 transition-all hover:shadow-md">
+      <CardHeader className="pb-2">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <img src={icon || "/placeholder.svg"} alt={name} className="w-12 h-12 rounded-full" />
+            <CardTitle className="text-2xl">{name}</CardTitle>
+          </div>
+          {isTestnet && <Badge variant="outline">Testnet</Badge>}
+        </div>
+      </CardHeader>
+      <CardContent>
+        <p className="text-muted-foreground">{description}</p>
+      </CardContent>
+      <CardFooter>
+        <Button variant="outline" className="w-full">
+          Learn More
+        </Button>
+      </CardFooter>
+    </Card>
   )
 }
 
