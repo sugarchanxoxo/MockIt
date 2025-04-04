@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@curvegrid/multibaas-sdk": "^1.0.2",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.4",
@@ -37,6 +38,13 @@
     "@radix-ui/react-toggle": "^1.1.1",
     "@radix-ui/react-toggle-group": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.6",
+    "@rainbow-me/rainbowkit": "^2.2.4",
+    "@reown/walletkit": "^1.2.3",
+    "@stripe/react-stripe-js": "latest",
+    "@stripe/stripe-js": "latest",
+    "@tanstack/react-query": "^5.71.5",
+    "@walletconnect/core": "^2.19.2",
+    "@walletconnect/utils": "^2.19.2",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -57,9 +65,9 @@
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.6",
-    "zod": "^3.24.1",
-    "@stripe/stripe-js": "latest",
-    "@stripe/react-stripe-js": "latest"
+    "viem": "^2.25.0",
+    "wagmi": "^2.14.16",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^22",
