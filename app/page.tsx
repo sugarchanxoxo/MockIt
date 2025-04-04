@@ -9,27 +9,26 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <div className="relative w-full bg-gradient-to-br from-purple-900 via-violet-800 to-purple-700 text-white">
-        <div className="container mx-auto py-20 px-4">
+        <div className="container mx-auto py-28 px-4">
           <div className="flex flex-col items-center justify-center space-y-6 text-center max-w-4xl mx-auto">
             <Badge
               className="px-4 py-1.5 text-lg bg-white/20 text-white border-none backdrop-blur-sm"
               variant="outline"
             >
-              Fast & Fun NFT Creation
+              ✨🐈🤍
             </Badge>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Create AI-Generated NFTs</h1>
             <p className="text-xl md:text-2xl text-white/80 max-w-3xl">
-              Generate unique NFTs with AI, track their history on-chain, and build upon existing creations. Deploy on
-              Polygon and Base with flexible payment options.
+              Generate unique NFTs with AI, track their history on-chain, and build upon existing creations. Share your experience 🐰
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <Button size="lg" className="bg-white text-purple-900 hover:bg-white/90" asChild>
                 <Link href="/create">
-                  Create NFT <ArrowRight className="ml-2 h-5 w-5" />
+                  Create NFT
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" asChild>
-                <Link href="/explore">Explore Gallery</Link>
+              <Button size="lg" variant="outline" className="border-white text-purple-900 hover:bg-white/10" asChild>
+                <Link href="/explore">Explore Creations</Link>
               </Button>
             </div>
           </div>
@@ -45,14 +44,14 @@ export default function Home() {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto py-16 px-4">
-        <div className="space-y-16">
+      <div className="container mx-auto py-24 px-4 pb-0">
+        <div className="space-y-28">
           {/* Key Features Section */}
-          <section>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Key Features</h2>
+          <section className="py-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Key Features?</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Our platform offers everything you need to create, manage, and trade AI-generated NFTs
+                We offer you need to create, collaborate, and track AI-generated NFTs
               </p>
             </div>
 
@@ -76,8 +75,8 @@ export default function Home() {
           </section>
 
           {/* Technical Details Section */}
-          <section>
-            <div className="text-center mb-12">
+          <section className="py-8">
+            <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Technical Implementation</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Built with cutting-edge blockchain technology
@@ -138,8 +137,8 @@ export default function Home() {
           </section>
 
           {/* Supported Chains Section */}
-          <section>
-            <div className="text-center mb-12">
+          <section className="py-8">
+            <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Supported Chains</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Deploy your NFTs on these high-performance blockchains
@@ -163,20 +162,19 @@ export default function Home() {
           </section>
 
           {/* CTA Section */}
-          <section className="bg-purple-50 rounded-2xl p-10 text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to Create Your NFT?</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Start generating unique AI-powered NFTs in minutes
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button size="lg" asChild>
-                <Link href="/create">
-                  Create NFT <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link href="/deploy">Deploy Contract</Link>
-              </Button>
+          <section className="bg-purple-50 w-screen relative left-1/2 right-1/2 -mx-[50vw] p-16 pb-20 text-center mb-0">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl font-bold mb-4">Ready to Create Your NFT?</h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+                Start generating unique AI-powered NFTs in seconds
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Button size="lg" asChild>
+                  <Link href="/create">
+                    Get Started
+                  </Link>
+                </Button>
+              </div>
             </div>
           </section>
         </div>
@@ -185,7 +183,7 @@ export default function Home() {
   )
 }
 
-function FeatureCard({ icon, title, description }) {
+function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
     <Card className="border-2 transition-all hover:shadow-md hover:-translate-y-1">
       <CardHeader className="pb-2">
@@ -199,7 +197,7 @@ function FeatureCard({ icon, title, description }) {
   )
 }
 
-function ChainCard({ name, description, isTestnet, icon }) {
+function ChainCard({ name, description, isTestnet, icon }: { name: string; description: string; isTestnet: boolean; icon: string }) {
   return (
     <Card className="border-2 transition-all hover:shadow-md">
       <CardHeader className="pb-2">
