@@ -1,0 +1,4 @@
+console.log("Your wallet address:", deployer.address);
+const [deployer] = await ethers.getSigners();
+console.log("Your wallet address:", deployer.address);
+const [deployer] = await ethers.getSigners();
