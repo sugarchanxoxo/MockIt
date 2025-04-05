@@ -1,20 +1,23 @@
-import type { Metadata } from 'next'
-import './globals.css'
-import { Providers } from './provider'
+import type { Metadata } from "next";
+import "./globals.css";
+import { Providers } from "./provider";
 
 export const metadata: Metadata = {
   title: "G-NFT",
-  description: "Frontend-only DApp to interact with a G-NFT contract on Ethereum",
-}
+  description:
+    "Frontend-only DApp to interact with a G-NFT contract on Ethereum",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body><Providers>{children}</Providers></body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
-  )
+  );
 }
