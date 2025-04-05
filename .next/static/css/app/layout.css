@@ -2214,6 +2214,14 @@ video {
   opacity: 1;
 }
 
+.group:hover .group-hover\:bg-primary {
+  background-color: hsl(var(--primary));
+}
+
+.group:hover .group-hover\:text-primary-foreground {
+  color: hsl(var(--primary-foreground));
+}
+
 .group\/menu-item:hover .group-hover\/menu-item\:opacity-100 {
   opacity: 1;
 }

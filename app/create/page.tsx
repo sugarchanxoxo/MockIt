@@ -19,6 +19,7 @@ export default function CreateNFT() {
   const [isMinting, setIsMinting] = useState(false);
   const [mintStatus, setMintStatus] = useState("");
   const [generateError, setGenerateError] = useState("");
+  const [activeTab, setActiveTab] = useState("collection");
 
   const generateNFT = async () => {
     try {
@@ -102,7 +103,7 @@ export default function CreateNFT() {
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <Tabs defaultValue="collection" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-8">
           <TabsTrigger value="collection">My Collection</TabsTrigger>
           <TabsTrigger value="create">Create New NFT</TabsTrigger>
@@ -125,12 +126,11 @@ export default function CreateNFT() {
               <p className="text-muted-foreground mb-6 max-w-md">
                 Use the "Create New NFT" tab to generate and mint your first NFT
               </p>
-              <Button variant="outline" asChild onClick={() => {
-                document.querySelector('[value="create"]')?.dispatchEvent(new Event('click'));
-              }}>
-                <span>
-                  <Plus className="mr-2 h-4 w-4" /> Create Your First NFT
-                </span>
+              <Button 
+                variant="outline" 
+                onClick={() => setActiveTab("create")}
+              >
+                <Plus className="mr-2 h-4 w-4" /> Create Your First NFT
               </Button>
             </Card>
           </div>
