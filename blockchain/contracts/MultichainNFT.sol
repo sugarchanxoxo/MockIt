@@ -14,7 +14,7 @@ contract MultichainNFT is ERC1155, Ownable {
     
     // Pricing
     uint256 public mintPriceETH = 0.01 ether;  // Default ETH price
-    uint256 public mintPriceUSDC = 10 * 10**6; // 10 USDC (6 decimals)
+    uint256 public mintPriceUSDC = 1 * 10 ** 5; // 0.1 USDC (6 decimals)
     
     // Metadata structure
     struct TokenMetadata {
