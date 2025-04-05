@@ -1,18 +1,22 @@
-import { concat, Contract, ethers, formatUnits, Interface, toBeHex, Wallet } from 'ethers'
+import { toBeHex } from 'ethers'
+
+import { concat } from 'ethers'
+
+import { BUNDLER_URL, USDC_ADDRESS, USDC_PAYMASTER_ADDRESS } from './common'
+
 import {
 	ADDRESS,
 	EOAValidatorModule,
 	KernelV3Account,
-	PimlicoBundler,
 	sendop,
-	zeroPadLeft,
 	type GetPaymasterStubDataResult,
 	type UserOp,
 } from 'sendop'
-import { chainId, client, getPermitData, usdc, USDC_ADDRESS, USDC_PAYMASTER_ADDRESS, BUNDLER_URL } from './common'
-import { TypedDataEncoder } from 'ethers'
+import { client, getPermitData, usdc } from './common'
 
-const NFT_CONTRACT_ADDRESS = '0x15d68Fd392E06051e476026927745a7007464390'
+import { Contract, ethers, formatUnits, Interface, TypedDataEncoder, Wallet } from 'ethers'
+import { PimlicoBundler, zeroPadLeft } from 'sendop'
+import { chainId } from './common'
 
 export interface MintNFTParams {
 	tokenURI: string
@@ -22,7 +26,7 @@ export interface MintNFTParams {
 export async function mintNFT({ tokenURI, privateKey }: MintNFTParams) {
 	const bundler = new PimlicoBundler(chainId.toString(), BUNDLER_URL, {
 		parseError: true,
-		skipGasEstimation: true,
+		debugSend: true,
 	})
 
 	const signer = new Wallet(privateKey, client)
@@ -34,6 +38,7 @@ export async function mintNFT({ tokenURI, privateKey }: MintNFTParams) {
 	const accountAddress = await KernelV3Account.getNewAddress(client, creationOptions)
 
 	const balance = await usdc.balanceOf?.(accountAddress)
+	console.log('usdc balance of accountAddress:', formatUnits(balance, 6))
 
 	if (balance === 0n) {
 		throw new Error('USDC Balance is 0 for account: ' + accountAddress)
@@ -50,11 +55,11 @@ export async function mintNFT({ tokenURI, privateKey }: MintNFTParams) {
 	const op = await sendop({
 		bundler,
 		executions: [
-			{
-				to: NFT_CONTRACT_ADDRESS,
-				data: new Interface(['function setNumber(uint256)']).encodeFunctionData('setNumber', [24]),
-				value: 0n,
-			},
+			// {
+			// 	to: NFT_CONTRACT_ADDRESS,
+			// 	data: new Interface(['function setNumber(uint256)']).encodeFunctionData('setNumber', [24]),
+			// 	value: 0n,
+			// },
 		],
 		opGetter: new KernelV3Account({
 			address: accountAddress,
@@ -62,7 +67,7 @@ export async function mintNFT({ tokenURI, privateKey }: MintNFTParams) {
 			bundler,
 			validator: eoaValidator,
 		}),
-		// initCode: KernelV3Account.getInitCode(creationOptions),
+		initCode: KernelV3Account.getInitCode(creationOptions),
 		pmGetter: {
 			async getPaymasterStubData(userOp: UserOp): Promise<GetPaymasterStubDataResult> {
 				const usdcPaymaster = new Contract(
@@ -70,7 +75,8 @@ export async function mintNFT({ tokenURI, privateKey }: MintNFTParams) {
 					new Interface(['function additionalGasCharge() view returns (uint256)']),
 					client,
 				)
-				// const additionalGasCharge = await usdcPaymaster.getFunction('additionalGasCharge')()
+				const additionalGasCharge = await usdcPaymaster.getFunction('additionalGasCharge')()
+				console.log('additionalGasCharge:', additionalGasCharge)
 
 				// The max amount allowed to be paid per user op
 				const MAX_GAS_USDC = 2n * 10n ** 6n
@@ -117,6 +123,7 @@ export async function mintNFT({ tokenURI, privateKey }: MintNFTParams) {
 					ADDRESS.ECDSAValidator,
 					signature,
 				])
+				console.log('wrappedSignature:', wrappedSignature)
 
 				const paymasterData = concat([
 					'0x00', // Reserved for future use
@@ -137,13 +144,19 @@ export async function mintNFT({ tokenURI, privateKey }: MintNFTParams) {
 		},
 	})
 
-	console.log(`userOp hash: ${op.hash}`)
+	console.log(`Transaction hash: ${op.hash}`)
 	const receipt = await op.wait()
-
-	console.log('success:', receipt.success)
-
 	return {
 		success: receipt.success,
 		hash: op.hash,
 	}
 }
+
+const TEST_PRIVATE_KEY = '0x2c5cdea134cee1c6d206b52e111286b5d0fccc2ef7860c426247a9543f4c0760'
+
+const result = await mintNFT({
+	tokenURI: 'https://example.com/nft',
+	privateKey: TEST_PRIVATE_KEY,
+})
+
+console.log('result:', result)

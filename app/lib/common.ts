@@ -11,7 +11,7 @@ export const USDC_ADDRESS = '0x036CbD53842c5426634e7929541eC2318f3dCF7e'
 export const USDC_PAYMASTER_ADDRESS = '0x31BE08D380A21fc740883c0BC434FcFc88740b58'
 
 export const usdc = new ethers.Contract(USDC_ADDRESS, ['function balanceOf(address) view returns (uint256)'], client)
-export const BUNDLER_URL = `https://public.pimlico.io/v2/${chainId.toString()}/rpc`
+export const BUNDLER_URL = 'https://api.pimlico.io/v2/84532/rpc?apikey=pim_D3FG1UPaiDo7ezfVR3bACV'
 
 export interface PermitData {
 	provider: ethers.Provider

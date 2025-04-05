@@ -233,26 +233,25 @@ export default function CreateNFT() {
 	}
 
 	const handleMint = async () => {
-		if (!generatedImage || !walletAddress) return
+		if (!walletAddress) return
 
 		try {
 			setIsMinting(true)
 			const result = await mintNFT({
-				tokenURI: generatedImage,
 				privateKey: TEST_PRIVATE_KEY,
+				tokenURI: 'https://example.com/nft',
 			})
 
 			if (result.success) {
 				// Add the new NFT to the collection
-				// You would typically fetch the new NFT data from your contract here
 				const newNft = {
 					id: userNfts.length + 1,
-					name: `AI Creation #${userNfts.length + 1}`,
-					image: generatedImage,
+					name: `Test NFT #${userNfts.length + 1}`,
+					image: '/placeholder.svg?height=300&width=300',
 					creator: walletAddress,
 					creatorName: 'You',
 					creatorAvatar: '/placeholder.svg?height=40&width=40',
-					prompt: prompt,
+					prompt: 'Test mint without AI generation',
 					created: new Date().toLocaleDateString('en-US', {
 						month: 'long',
 						day: 'numeric',
@@ -264,8 +263,8 @@ export default function CreateNFT() {
 							id: Date.now(),
 							contributor: 'You',
 							contributorAvatar: '/placeholder.svg?height=40&width=40',
-							prompt: prompt,
-							image: generatedImage,
+							prompt: 'Test mint without AI generation',
+							image: '/placeholder.svg?height=300&width=300',
 							date: new Date().toLocaleDateString('en-US', {
 								month: 'long',
 								day: 'numeric',
@@ -277,7 +276,7 @@ export default function CreateNFT() {
 
 				// Reset the form
 				setPrompt('')
-				setGeneratedImage(null)
+				setGeneratedImage('/placeholder.svg?height=300&width=300')
 			}
 		} catch (error) {
 			console.error('Failed to mint NFT:', error)
@@ -456,12 +455,12 @@ export default function CreateNFT() {
 								</div>
 							</CardContent>
 							<CardFooter>
-								<Button disabled={!generatedImage || isMinting} onClick={handleMint} className="w-full">
+								<Button disabled={isMinting} onClick={handleMint} className="w-full">
 									{isMinting ? (
 										<>Minting NFT...</>
 									) : (
 										<>
-											Mint NFT <ArrowRight className="ml-2 h-4 w-4" />
+											Mint Test NFT <ArrowRight className="ml-2 h-4 w-4" />
 										</>
 									)}
 								</Button>

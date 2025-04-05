@@ -5,8 +5,10 @@ import { Wallet } from 'ethers'
 import { MaxUint256 } from 'ethers'
 import type { TypedDataDomain, TypedDataField } from 'ethers'
 
-export const USDC_ADDRESS = '0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d'
-export const client = new JsonRpcProvider(process.env.arbitrumSepolia as string)
+export const USDC_ADDRESS = '0x036CbD53842c5426634e7929541eC2318f3dCF7e'
+export const USDC_PAYMASTER_ADDRESS = '0x31BE08D380A21fc740883c0BC434FcFc88740b58'
+export const BUNDLER_URL = 'https://api.pimlico.io/v2/84532/rpc?apikey=pim_D3FG1UPaiDo7ezfVR3bACV'
+export const client = new JsonRpcProvider(process.env.baseSepolia as string)
 export const usdc = new Contract(USDC_ADDRESS, new Interface(usdcAbi), client)
 export const acc0 = new Wallet(process.env.acc0pk as string, client)
 export const acc1 = new Wallet(process.env.acc1pk as string, client)
