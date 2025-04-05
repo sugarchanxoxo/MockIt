@@ -198,6 +198,16 @@ function FeatureCard({ icon, title, description }: { icon: React.ReactNode; titl
 }
 
 function ChainCard({ name, description, isTestnet, icon }: { name: string; description: string; isTestnet: boolean; icon: string }) {
+  // Determine the URL based on chain name
+  const getChainUrl = () => {
+    if (name === "Polygon") {
+      return "https://polygon.technology/blog/introducing-the-amoy-testnet-for-polygon-pos";
+    } else if (name === "Base") {
+      return "https://docs.base.org/learn/deployment-to-testnet/deployment-to-base-sepolia-sbs";
+    }
+    return "#";
+  };
+
   return (
     <Card className="border-2 transition-all hover:shadow-md">
       <CardHeader className="pb-2">
@@ -213,8 +223,10 @@ function ChainCard({ name, description, isTestnet, icon }: { name: string; descr
         <p className="text-muted-foreground">{description}</p>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="w-full">
-          Learn More
+        <Button variant="outline" className="w-full" asChild>
+          <Link href={getChainUrl()} target="_blank" rel="noopener noreferrer">
+            Learn More <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
         </Button>
       </CardFooter>
     </Card>

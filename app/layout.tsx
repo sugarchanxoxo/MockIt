@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { Providers } from './provider'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: "G-NFT",
+  description: "Frontend-only DApp to interact with a G-NFT contract on Ethereum",
 }
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><Providers>{children}</Providers></body>
     </html>
   )
 }

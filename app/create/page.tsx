@@ -9,217 +9,101 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ArrowRight, ImageIcon, Sparkles, Wallet, Plus, Info } from "lucide-react"
+import { ArrowRight, ImageIcon, Sparkles, Wallet, Plus, Info, Coins, Loader } from "lucide-react"
+import Link from "next/link"
 
 export default function CreateNFT() {
-  const [isWalletConnected, setIsWalletConnected] = useState(false)
-  const [prompt, setPrompt] = useState("")
-  const [isGenerating, setIsGenerating] = useState(false)
-  const [selectedNft, setSelectedNft] = useState(null)
+  const [prompt, setPrompt] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isMinting, setIsMinting] = useState(false);
+  const [mintStatus, setMintStatus] = useState("");
+  const [generateError, setGenerateError] = useState("");
+  const [activeTab, setActiveTab] = useState("collection");
 
-  // Mock NFT data
-  const userNfts = [
-    {
-      id: 1,
-      name: "Cosmic Explorer #1",
-      image: "/placeholder.svg?height=300&width=300",
-      creator: "0x1234...5678",
-      creatorName: "ArtistAlpha",
-      creatorAvatar: "/placeholder.svg?height=40&width=40",
-      prompt: "A cosmic explorer traveling through nebulas with vibrant purple and blue colors, digital art style",
-      created: "April 2, 2023",
-      chain: "Polygon",
-      history: [
-        {
-          id: 101,
-          contributor: "CryptoArtist42",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt: "Initial concept: A space explorer floating through a nebula with stars and cosmic dust",
-          image: "/placeholder.svg?height=200&width=200",
-          date: "March 25, 2023",
-        },
-        {
-          id: 102,
-          contributor: "NebulaDesigner",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt:
-            "Added more vibrant colors to the nebula and enhanced the cosmic explorer's suit with glowing elements",
-          image: "/placeholder.svg?height=200&width=200",
-          date: "March 28, 2023",
-        },
-        {
-          id: 103,
-          contributor: "ArtistAlpha",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt:
-            "Final version: A cosmic explorer traveling through nebulas with vibrant purple and blue colors, digital art style",
-          image: "/placeholder.svg?height=300&width=300",
-          date: "April 2, 2023",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Digital Dreamscape #7",
-      image: "/placeholder.svg?height=300&width=300",
-      creator: "0x8765...4321",
-      creatorName: "DigitalDreamer",
-      creatorAvatar: "/placeholder.svg?height=40&width=40",
-      prompt: "A surreal landscape with floating islands and waterfalls that defy gravity, dreamlike atmosphere",
-      created: "March 15, 2023",
-      chain: "Base",
-      history: [
-        {
-          id: 201,
-          contributor: "DreamWeaver",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt: "Initial sketch: Floating islands with cascading waterfalls in a dreamlike setting",
-          image: "/placeholder.svg?height=200&width=200",
-          date: "March 8, 2023",
-        },
-        {
-          id: 202,
-          contributor: "LandscapeArtist",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt: "Added more detail to the islands and enhanced the waterfalls with glowing effects",
-          image: "/placeholder.svg?height=200&width=200",
-          date: "March 12, 2023",
-        },
-        {
-          id: 203,
-          contributor: "DigitalDreamer",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt:
-            "Final version: A surreal landscape with floating islands and waterfalls that defy gravity, dreamlike atmosphere",
-          image: "/placeholder.svg?height=300&width=300",
-          date: "March 15, 2023",
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "Neural Network #42",
-      image: "/placeholder.svg?height=300&width=300",
-      creator: "0x1234...5678",
-      creatorName: "ArtistAlpha",
-      creatorAvatar: "/placeholder.svg?height=40&width=40",
-      prompt: "Abstract visualization of a neural network with nodes and connections in neon colors on dark background",
-      created: "February 28, 2023",
-      chain: "Polygon",
-      history: [
-        {
-          id: 301,
-          contributor: "CodeVisualizer",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt: "Initial concept: A basic neural network structure with interconnected nodes",
-          image: "/placeholder.svg?height=200&width=200",
-          date: "February 20, 2023",
-        },
-        {
-          id: 302,
-          contributor: "NeonArtist",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt: "Added neon colors to the nodes and connections to enhance the visual appeal",
-          image: "/placeholder.svg?height=200&width=200",
-          date: "February 25, 2023",
-        },
-        {
-          id: 303,
-          contributor: "ArtistAlpha",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt:
-            "Final version: Abstract visualization of a neural network with nodes and connections in neon colors on dark background",
-          image: "/placeholder.svg?height=300&width=300",
-          date: "February 28, 2023",
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: "Quantum Realm #3",
-      image: "/placeholder.svg?height=300&width=300",
-      creator: "0x9876...2345",
-      creatorName: "QuantumCreator",
-      creatorAvatar: "/placeholder.svg?height=40&width=40",
-      prompt: "Microscopic view of the quantum realm with particles and energy waves in vibrant colors",
-      created: "April 10, 2023",
-      chain: "Base",
-      history: [
-        {
-          id: 401,
-          contributor: "ParticlePainter",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt: "Initial sketch: A microscopic view of particles and energy waves",
-          image: "/placeholder.svg?height=200&width=200",
-          date: "April 3, 2023",
-        },
-        {
-          id: 402,
-          contributor: "EnergyArtist",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt: "Enhanced the energy waves with vibrant colors and added more detail to the particles",
-          image: "/placeholder.svg?height=200&width=200",
-          date: "April 7, 2023",
-        },
-        {
-          id: 403,
-          contributor: "QuantumCreator",
-          contributorAvatar: "/placeholder.svg?height=40&width=40",
-          prompt:
-            "Final version: Microscopic view of the quantum realm with particles and energy waves in vibrant colors",
-          image: "/placeholder.svg?height=300&width=300",
-          date: "April 10, 2023",
-        },
-      ],
-    },
-  ]
+  const generateNFT = async () => {
+    try {
+      setIsGenerating(true);
+      setGenerateError("");
+      
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imagePrompt: prompt }),
+      });
 
-  const handleConnectWallet = () => {
-    setIsWalletConnected(true)
-  }
+      if (!res.ok) {
+        const error = await res.text();
+        throw new Error(error);
+      }
 
-  const handleGenerate = () => {
-    if (!prompt) return
+      const data = await res.json();
+      setImageUrl(data.imageUrl);
+    } catch (error) {
+      console.error("Error generating image:", error);
+      setGenerateError(error instanceof Error ? error.message : "Failed to generate image");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
-    setIsGenerating(true)
+  const mintWithETH = async () => {
+    try {
+      setIsMinting(true);
+      setMintStatus("Processing ETH transaction...");
+      
+      // Contract call would go here
+      // Example:
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // const signer = provider.getSigner();
+      // const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+      // const tx = await contract.mintNFT(imageUrl, prompt, { value: ethers.utils.parseEther("0.01") });
+      // await tx.wait();
+      
+      // Simulate contract call with timeout
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      setMintStatus("Success! NFT minted with ETH");
+    } catch (error) {
+      console.error("Error minting with ETH:", error);
+      setMintStatus("Error: Failed to mint NFT with ETH");
+    } finally {
+      setIsMinting(false);
+    }
+  };
 
-    // Simulate AI generation
-    setTimeout(() => {
-      setIsGenerating(false)
-      // Would show the generated image here
-    }, 2000)
-  }
-
-  const handleNftClick = (nft) => {
-    setSelectedNft(nft)
-  }
-
-  const handleCloseDialog = () => {
-    setSelectedNft(null)
-  }
-
-  if (!isWalletConnected) {
-    return (
-      <div className="container mx-auto py-20 px-4">
-        <div className="max-w-md mx-auto text-center">
-          <div className="bg-purple-100 p-4 rounded-full inline-block mb-6">
-            <Wallet className="h-12 w-12 text-purple-700" />
-          </div>
-          <h1 className="text-3xl font-bold mb-4">Connect Your Wallet</h1>
-          <p className="text-muted-foreground mb-8">
-            Connect your wallet to view your NFT collection and create new AI-generated NFTs.
-          </p>
-          <Button size="lg" onClick={handleConnectWallet} className="w-full">
-            Connect Wallet
-          </Button>
-        </div>
-      </div>
-    )
-  }
+  const mintWithUSDC = async () => {
+    try {
+      setIsMinting(true);
+      setMintStatus("Processing USDC transaction...");
+      
+      // Contract calls would go here
+      // Example:
+      // 1. First approve USDC spending
+      // const usdcContract = new ethers.Contract(USDC_ADDRESS, ERC20_ABI, signer);
+      // const approveTx = await usdcContract.approve(CONTRACT_ADDRESS, ethers.utils.parseUnits("10", 6));
+      // await approveTx.wait();
+      
+      // 2. Then mint with USDC
+      // const nftContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+      // const mintTx = await nftContract.mintNFTWithUSDC(imageUrl, prompt);
+      // await mintTx.wait();
+      
+      // Simulate contract call with timeout
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      setMintStatus("Success! NFT minted with USDC");
+    } catch (error) {
+      console.error("Error minting with USDC:", error);
+      setMintStatus("Error: Failed to mint NFT with USDC");
+    } finally {
+      setIsMinting(false);
+    }
+  };
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <Tabs defaultValue="collection" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-8">
           <TabsTrigger value="collection">My Collection</TabsTrigger>
           <TabsTrigger value="create">Create New NFT</TabsTrigger>
@@ -227,7 +111,7 @@ export default function CreateNFT() {
 
         <TabsContent value="collection" className="space-y-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold">Your NFT Collection</h2>
+            <h2 className="text-2xl font-bold">Your Creation</h2>
             <div className="flex items-center space-x-2">
               <Badge variant="outline" className="text-sm">
                 <Wallet className="h-3 w-3 mr-1" /> 0x1234...5678
@@ -236,43 +120,18 @@ export default function CreateNFT() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {userNfts.map((nft) => (
-              <Card
-                key={nft.id}
-                className="overflow-hidden cursor-pointer transition-all hover:shadow-md hover:-translate-y-1"
-                onClick={() => handleNftClick(nft)}
+            <Card className="col-span-full flex flex-col items-center justify-center py-12 text-center">
+              <ImageIcon className="h-16 w-16 text-muted-foreground/30 mb-4" />
+              <h3 className="text-xl font-medium mb-2">No NFTs created yet</h3>
+              <p className="text-muted-foreground mb-6 max-w-md">
+                Use the "Create New NFT" tab to generate and mint your first NFT
+              </p>
+              <Button 
+                variant="outline" 
+                onClick={() => setActiveTab("create")}
               >
-                <div className="aspect-square relative">
-                  <img src={nft.image || "/placeholder.svg"} alt={nft.name} className="object-cover w-full h-full" />
-                </div>
-                <CardContent className="p-4">
-                  <h3 className="font-medium truncate">{nft.name}</h3>
-                  <div className="flex justify-between items-center mt-2">
-                    <div className="flex items-center">
-                      <Avatar className="h-6 w-6 mr-2">
-                        <AvatarImage src={nft.creatorAvatar} />
-                        <AvatarFallback>{nft.creatorName.substring(0, 2)}</AvatarFallback>
-                      </Avatar>
-                      <span className="text-xs text-muted-foreground">{nft.creatorName}</span>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
-                      {nft.chain}
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-
-            <Card
-              className="overflow-hidden cursor-pointer transition-all hover:shadow-md hover:-translate-y-1 border-dashed"
-              onClick={() => document.getElementById("create-tab-trigger").click()}
-            >
-              <div className="aspect-square flex items-center justify-center">
-                <div className="flex flex-col items-center text-muted-foreground">
-                  <Plus className="h-12 w-12 mb-2" />
-                  <span>Create New</span>
-                </div>
-              </div>
+                <Plus className="mr-2 h-4 w-4" /> Create Your First NFT
+              </Button>
             </Card>
           </div>
         </TabsContent>
@@ -302,18 +161,26 @@ export default function CreateNFT() {
                   <Info className="h-4 w-4" />
                   <span>Be descriptive for better results. Include style, colors, and themes.</span>
                 </div>
+                
+                {generateError && (
+                  <div className="bg-red-100 text-red-800 p-2 rounded text-sm">
+                    {generateError}
+                  </div>
+                )}
               </CardContent>
               <CardFooter>
-                <Button onClick={handleGenerate} disabled={!prompt || isGenerating} className="w-full">
+                <Button 
+                  onClick={generateNFT} 
+                  className="w-full"
+                  disabled={!prompt || isGenerating || isMinting}
+                >
                   {isGenerating ? (
                     <>
-                      Generating
-                      <Sparkles className="ml-2 h-4 w-4 animate-pulse" />
+                      <Loader className="mr-2 h-4 w-4 animate-spin" /> Generating...
                     </>
                   ) : (
                     <>
-                      Generate with AI
-                      <Sparkles className="ml-2 h-4 w-4" />
+                      Generate Image <Sparkles className="ml-2 h-4 w-4" />
                     </>
                   )}
                 </Button>
@@ -325,130 +192,72 @@ export default function CreateNFT() {
                 <CardTitle>Preview</CardTitle>
                 <CardDescription>Your generated NFT</CardDescription>
               </CardHeader>
-              <CardContent className="flex justify-center">
-                <div className="flex flex-col items-center justify-center border rounded-lg p-10 w-full h-[300px]">
-                  <ImageIcon className="h-16 w-16 text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground">
-                    {isGenerating ? "Generating your image..." : "Your NFT will appear here"}
-                  </p>
-                </div>
+              <CardContent className="flex justify-center items-center min-h-[300px]">
+                {isGenerating ? (
+                  <div className="text-center text-muted-foreground">
+                    <Loader className="mx-auto h-16 w-16 opacity-50 mb-4 animate-spin" />
+                    <p>Generating image with Stable Diffusion 3...</p>
+                    <p className="text-xs mt-2">This may take up to 30 seconds</p>
+                  </div>
+                ) : imageUrl ? (
+                  <img 
+                    src={imageUrl} 
+                    alt="Generated NFT" 
+                    className="max-h-[300px] rounded-lg"
+                  />
+                ) : (
+                  <div className="text-center text-muted-foreground">
+                    <ImageIcon className="mx-auto h-16 w-16 opacity-20 mb-2" />
+                    <p>Generate an image to preview it here</p>
+                  </div>
+                )}
               </CardContent>
-              <CardFooter>
-                <Button disabled={true} className="w-full">
-                  Mint NFT <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+              <CardFooter className="flex flex-col space-y-4">
+                {mintStatus && (
+                  <div className={`w-full p-2 rounded text-center text-sm ${
+                    mintStatus.includes("Success") 
+                      ? "bg-green-100 text-green-800" 
+                      : mintStatus.includes("Error") 
+                        ? "bg-red-100 text-red-800" 
+                        : "bg-blue-100 text-blue-800"
+                  }`}>
+                    {mintStatus}
+                  </div>
+                )}
+                
+                <div className="grid grid-cols-2 gap-4 w-full">
+                  <Button 
+                    onClick={mintWithETH} 
+                    disabled={!imageUrl || isMinting || isGenerating}
+                    className="w-full"
+                  >
+                    {isMinting ? (
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Wallet className="mr-2 h-4 w-4" />
+                    )}{" "}
+                    Mint with ETH
+                  </Button>
+                  
+                  <Button 
+                    onClick={mintWithUSDC} 
+                    disabled={!imageUrl || isMinting || isGenerating}
+                    className="w-full"
+                    variant="secondary"
+                  >
+                    {isMinting ? (
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Coins className="mr-2 h-4 w-4" />
+                    )}{" "}
+                    Mint with USDC
+                  </Button>
+                </div>
               </CardFooter>
             </Card>
           </div>
         </TabsContent>
       </Tabs>
-
-      {/* NFT Detail Dialog */}
-      <Dialog open={selectedNft !== null} onOpenChange={handleCloseDialog}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl">{selectedNft?.name}</DialogTitle>
-            <DialogDescription>Created on {selectedNft?.created}</DialogDescription>
-          </DialogHeader>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-            <div>
-              <img
-                src={selectedNft?.image || "/placeholder.svg"}
-                alt={selectedNft?.name}
-                className="rounded-lg w-full object-cover"
-              />
-            </div>
-
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-medium mb-2">Creator</h3>
-                <div className="flex items-center space-x-3">
-                  <Avatar>
-                    <AvatarImage src={selectedNft?.creatorAvatar} />
-                    <AvatarFallback>{selectedNft?.creatorName?.substring(0, 2)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium">{selectedNft?.creatorName}</p>
-                    <p className="text-sm text-muted-foreground">{selectedNft?.creator}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-medium mb-2">AI Prompt</h3>
-                <Card className="bg-muted">
-                  <CardContent className="p-4">
-                    <p className="text-sm italic">"{selectedNft?.prompt}"</p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-medium mb-2">Details</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Blockchain</span>
-                    <Badge>{selectedNft?.chain}</Badge>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Token ID</span>
-                    <span className="font-mono">#{selectedNft?.id}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Created</span>
-                    <span>{selectedNft?.created}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-4">
-                <Button className="w-full">
-                  View on Explorer <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8">
-            <h3 className="text-xl font-medium mb-4">Contribution History</h3>
-            <div className="space-y-6">
-              {selectedNft?.history?.map((item, index) => (
-                <Card key={item.id} className={index === selectedNft.history.length - 1 ? "border-primary" : ""}>
-                  <CardContent className="p-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <img
-                          src={item.image || "/placeholder.svg"}
-                          alt={`Contribution by ${item.contributor}`}
-                          className="rounded-lg w-full h-auto object-cover"
-                        />
-                      </div>
-                      <div className="md:col-span-2 space-y-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
-                            <Avatar className="h-6 w-6">
-                              <AvatarImage src={item.contributorAvatar} />
-                              <AvatarFallback>{item.contributor.substring(0, 2)}</AvatarFallback>
-                            </Avatar>
-                            <span className="font-medium">{item.contributor}</span>
-                          </div>
-                          <span className="text-sm text-muted-foreground">{item.date}</span>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-medium mb-1">AI Prompt:</h4>
-                          <p className="text-sm text-muted-foreground italic">"{item.prompt}"</p>
-                        </div>
-                        {index === selectedNft.history.length - 1 && <Badge className="mt-2">Current Version</Badge>}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
