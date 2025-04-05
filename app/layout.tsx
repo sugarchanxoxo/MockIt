@@ -4,8 +4,8 @@ import '@rainbow-me/rainbowkit/styles.css'
 import { Providers } from './provider'
 
 export const metadata: Metadata = {
-	title: 'G-NFT',
-	description: 'Frontend-only DApp to interact with a G-NFT contract on Ethereum',
+	title: 'NekoDAO',
+	description: 'Generate unique NFTs with AI, track their history on-chain, and contribute to existing creations✨',
 }
 
 export default function RootLayout({
