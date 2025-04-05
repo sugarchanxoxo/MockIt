@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ArrowRight, ImageIcon, Sparkles, Wallet as WalletIcon, Plus, Info } from 'lucide-react'
-import { mintNFT } from '@/app/lib/mintNFT'
+import { mintNFTWithUSDC } from '@/app/lib/mintNFT'
 
 // Test private key - DO NOT use in production! 0x655155d6EDcB71ebD16b6f09c483a104D3410F94
 const TEST_PRIVATE_KEY = '0x2c5cdea134cee1c6d206b52e111286b5d0fccc2ef7860c426247a9543f4c0760'
@@ -237,7 +237,7 @@ export default function CreateNFT() {
 
 		try {
 			setIsMinting(true)
-			const result = await mintNFT({
+			const result = await mintNFTWithUSDC({
 				privateKey: TEST_PRIVATE_KEY,
 				tokenURI: 'https://example.com/nft',
 			})

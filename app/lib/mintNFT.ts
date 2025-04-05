@@ -12,14 +12,14 @@ import {
 import { chainId, client, getPermitData, usdc, USDC_ADDRESS, USDC_PAYMASTER_ADDRESS, BUNDLER_URL } from './common'
 import { TypedDataEncoder } from 'ethers'
 
-const NFT_CONTRACT_ADDRESS = '0x15d68Fd392E06051e476026927745a7007464390'
+const NFT_CONTRACT_ADDRESS = '0xaE9EcABC662e5A6D4EB1d4e5697aC13fAfB12619'
 
 export interface MintNFTParams {
 	tokenURI: string
 	privateKey: string
 }
 
-export async function mintNFT({ tokenURI, privateKey }: MintNFTParams) {
+export async function mintNFTWithUSDC({ tokenURI, privateKey }: MintNFTParams) {
 	const bundler = new PimlicoBundler(chainId.toString(), BUNDLER_URL, {
 		parseError: true,
 		skipGasEstimation: true,
@@ -52,7 +52,9 @@ export async function mintNFT({ tokenURI, privateKey }: MintNFTParams) {
 		executions: [
 			{
 				to: NFT_CONTRACT_ADDRESS,
-				data: new Interface(['function setNumber(uint256)']).encodeFunctionData('setNumber', [24]),
+				data: new Interface([
+					'function mintWithUSDC(string memory _imageURI, string memory _promptText, uint256 _amount)',
+				]).encodeFunctionData('mintWithUSDC', [tokenURI, 'test', 1]),
 				value: 0n,
 			},
 		],
