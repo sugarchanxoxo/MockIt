@@ -53,7 +53,7 @@ export async function mintNFTWithUSDC({ tokenURI, privateKey }: MintNFTParams) {
 				to: NFT_CONTRACT_ADDRESS,
 				data: new Interface([
 					'function mintWithUSDC(string memory _imageURI, string memory _promptText, uint256 _amount)',
-				]).encodeFunctionData('mintWithUSDC', [tokenURI, 'test', 1]),
+				]).encodeFunctionData('mintWithUSDC', ['test', 'test', 1]),
 				value: 0n,
 			},
 		],

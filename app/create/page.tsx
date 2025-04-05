@@ -11,6 +11,9 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { Coins, ImageIcon, Info, Loader, Plus, Sparkles, Wallet } from 'lucide-react'
 import { useState } from 'react'
 import { useWaitForTransactionReceipt } from 'wagmi'
+import { mintNFTWithUSDC } from '../lib/mintNFT'
+
+const TEST_PRIVATE_KEY = '0x2c5cdea134cee1c6d206b52e111286b5d0fccc2ef7860c426247a9543f4c0760'
 
 export default function CreateNFT() {
 	const [prompt, setPrompt] = useState<string>('')
@@ -61,10 +64,27 @@ export default function CreateNFT() {
 	}
 
 	const handleMintWithUSDC = async () => {
-		setIsMinting(true)
-		const result = await mintWithUSDC(imageUrl, prompt, 1)
-		alert(result)
-		setIsMinting(false)
+		try {
+			setIsMinting(true)
+			setMintStatus('Minting with USDC...')
+
+			const result = await mintNFTWithUSDC({
+				tokenURI: imageUrl,
+				privateKey: TEST_PRIVATE_KEY,
+			})
+
+			if (result.success) {
+				setMintStatus(`Success! Transaction hash: ${result.hash}`)
+				setTxHash(result.hash)
+			} else {
+				setMintStatus('Minting failed')
+			}
+		} catch (error) {
+			console.error('Error minting with USDC:', error)
+			setMintStatus(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`)
+		} finally {
+			setIsMinting(false)
+		}
 	}
 
 	return (
