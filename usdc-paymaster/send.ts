@@ -10,6 +10,7 @@ import {
 	type UserOp,
 } from 'sendop'
 import { chainId, client, getPermitData, usdc, USDC_ADDRESS } from './common'
+import { TypedDataEncoder } from 'ethers'
 
 const USDC_PAYMASTER_ADDRESS = '0x31BE08D380A21fc740883c0BC434FcFc88740b58'
 const BUNDLER_URL =
@@ -33,10 +34,20 @@ const bundler = new PimlicoBundler(chainId.toString(), BUNDLER_URL, {
 })
 
 const signer = new Wallet(process.env.acc0pk as string)
-const accountAddress = '0xF5090a4b164e4Ed26CF572333AC31848a101Cbf6'
+const creationOptions = {
+	salt: zeroPadLeft('0x20'),
+	validatorAddress: ADDRESS.K1Validator,
+	validatorInitData: await signer.getAddress(),
+}
+const accountAddress = await KernelV3Account.getNewAddress(client, creationOptions)
 
 const balance = await usdc.balanceOf?.(accountAddress)
 console.log('usdc balance of accountAddress:', formatUnits(balance, 6))
+
+const eoaValidator = new EOAValidatorModule({
+	address: ADDRESS.K1Validator,
+	signer,
+})
 
 const op = await sendop({
 	bundler,
@@ -45,10 +56,18 @@ const op = await sendop({
 		address: accountAddress,
 		client,
 		bundler,
-		validator: new EOAValidatorModule({
-			address: ADDRESS.K1Validator,
-			signer,
-		}),
+		// validator: {
+		// 	address() {
+		// 		return eoaValidator.address()
+		// 	},
+		// 	getDummySignature(userOp: UserOp) {
+		// 		return concat(['0x01', this.address(), eoaValidator.getDummySignature(userOp)])
+		// 	},
+		// 	async getSignature(userOpHash: Uint8Array, userOp: UserOp) {
+		// 		return concat(['0x01', this.address(), await eoaValidator.getSignature(userOpHash, userOp)])
+		// 	},
+		// },
+		validator: eoaValidator,
 	}),
 	pmGetter: {
 		async getPaymasterStubData(userOp: UserOp): Promise<GetPaymasterStubDataResult> {
@@ -63,7 +82,7 @@ const op = await sendop({
 			// paymasterData = 0x00 || usdc address || Max spendable gas in USDC || EIP-2612 permit signature
 
 			// The max amount allowed to be paid per user op
-			const MAX_GAS_USDC = 2n * 10n ** 6n
+			const MAX_GAS_USDC = 3n * 10n ** 6n
 
 			const permitData = await getPermitData({
 				provider: client,
@@ -76,12 +95,22 @@ const op = await sendop({
 
 			console.log('permitData:', permitData)
 
+			console.log('TypedDataHash', TypedDataEncoder.hash(...permitData))
+
 			const signature = await signer.signTypedData(...permitData)
+
+			console.log('permit signer:', signer.address)
+			console.log('permit signature:', signature)
+
+			const wrappedSignature = concat(['0x01', ADDRESS.K1Validator, signature])
+
+			console.log('permit wrappedSignature:', wrappedSignature)
+
 			const paymasterData = concat([
 				'0x00', // Reserved for future use
 				USDC_ADDRESS, // Token address
 				zeroPadLeft(toBeHex(MAX_GAS_USDC)), // Max spendable gas in USDC
-				signature, // EIP-2612 permit signature
+				wrappedSignature, // EIP-2612 permit signature
 			])
 
 			return {
