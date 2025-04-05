@@ -57,7 +57,7 @@ const op = await sendop({
 	executions: [
 		{
 			to: COUNTER_ADDRESS,
-			data: new Interface(['function setNumber(uint256)']).encodeFunctionData('setNumber', [12]),
+			data: new Interface(['function setNumber(uint256)']).encodeFunctionData('setNumber', [24]),
 			value: 0n,
 		},
 	],
@@ -67,7 +67,7 @@ const op = await sendop({
 		bundler,
 		validator: eoaValidator,
 	}),
-	initCode: KernelV3Account.getInitCode(creationOptions),
+	// initCode: KernelV3Account.getInitCode(creationOptions),
 	pmGetter: {
 		async getPaymasterStubData(userOp: UserOp): Promise<GetPaymasterStubDataResult> {
 			const usdcPaymaster = new Contract(
@@ -137,6 +137,7 @@ const op = await sendop({
 			return {
 				paymaster: USDC_PAYMASTER_ADDRESS,
 				paymasterData,
+				// TODO: should be fetch from the bundler
 				paymasterVerificationGasLimit: toBeHex(999_999n),
 				paymasterPostOpGasLimit: toBeHex(999_999n),
 				isFinal: true,
