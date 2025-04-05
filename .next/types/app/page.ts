@@ -1,4 +1,4 @@
-// File: /Users/miinadoi/Desktop/y2025/MockIt/app/page.tsx
+// File: /Users/johnson/MockIt/app/page.tsx
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
