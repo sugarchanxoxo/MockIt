@@ -1,0 +1,7 @@
+{
+  "extends": "solhint:recommended",
+  "rules": {
+    "no-empty-blocks": "off",
+    "func-visibility": ["warn", { "ignoreConstructors": true }]
+  }
+}
