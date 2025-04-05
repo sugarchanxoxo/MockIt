@@ -39,4 +39,4 @@ This project aims to build an NFT platform where users can effortlessly generate
 
 ## Current Status
 
-Currently, all frontend components are in place, and successfully deployed contract, yet the functionality has not been implemented yet.
+Currently, all frontend components are in place, successfully deployed contract, and the functionality has not been implemented yet.
