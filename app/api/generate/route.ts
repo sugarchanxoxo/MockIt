@@ -1,46 +1,52 @@
 import { NextRequest } from "next/server";
-import OpenAI from "openai";
+import axios from "axios";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Configure with your Stability AI API key
+const STABILITY_API_KEY = process.env.STABILITY_API_KEY;
 
 export async function POST(req: NextRequest) {
   const { imagePrompt } = await req.json();
 
   if (!imagePrompt) {
-    return {
-      status: 400,
-      body: "Please provide an image prompt",
-    };
+    return new Response("Image prompt is required", { status: 400 });
+  }
+
+  if (!STABILITY_API_KEY) {
+    return new Response("Stability API key is not configured", { status: 500 });
   }
 
   try {
-    const response = await openai.images.generate({
-      model: "dall-e-3",
+    // Prepare payload for Stability AI SD3
+    const payload = {
       prompt: imagePrompt,
-      n: 1,
-      size: "1024x1024",
-    });
+      output_format: "jpeg"
+    };
 
-    if (!response.data) {
-      throw new Error("Failed to generate image");
+    // Call Stability AI's v2beta API for SD3
+    const response = await axios.postForm(
+      `https://api.stability.ai/v2beta/stable-image/generate/sd3`,
+      axios.toFormData(payload),
+      {
+        validateStatus: undefined,
+        responseType: "arraybuffer",
+        headers: { 
+          Authorization: `Bearer ${STABILITY_API_KEY}`, 
+          Accept: "image/*" 
+        },
+      },
+    );
+
+    if (response.status !== 200) {
+      throw new Error(`${response.status}: ${Buffer.from(response.data).toString()}`);
     }
 
-    return new Response(JSON.stringify({ data: response.data }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    // Convert the image to a base64 string
+    const base64Image = Buffer.from(response.data).toString('base64');
+    const imageUrl = `data:image/jpeg;base64,${base64Image}`;
+    
+    return new Response(JSON.stringify({ imageUrl }), { status: 200 });
   } catch (error) {
-    console.error(error);
-    return new Response(
-      JSON.stringify({
-        error: "Failed to generate image due to internal server error",
-      }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    console.error("Error generating image:", error);
+    return new Response(`Failed to generate image: ${error instanceof Error ? error.message : 'Unknown error'}`, { status: 500 });
   }
 }
