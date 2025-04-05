@@ -1,8 +1,23 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Cpu, Database, Wallet, Sparkles, Code, Layers } from "lucide-react"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  ArrowRight,
+  Cpu,
+  Database,
+  Wallet,
+  Sparkles,
+  Code,
+  Layers,
+} from "lucide-react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function Home() {
   return (
@@ -17,17 +32,21 @@ export default function Home() {
             >
               ✨🐈🤍
             </Badge>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Create AI-Generated NFTs</h1>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+              Create AI-Generated NFTs
+            </h1>
             <p className="text-xl md:text-2xl text-white/80 max-w-3xl">
-              Generate unique NFTs with AI, track their history on-chain, and build upon existing creations. Share your experience 🐰
+              Generate unique NFTs with AI, track their history on-chain, and
+              build upon existing creations. Share your experience 🐰
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
-              <Button size="lg" className="bg-white text-purple-900 hover:bg-white/90" asChild>
-                <Link href="/create">
-                  Create NFT
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-white text-purple-900 hover:bg-white/10" asChild>
+              <ConnectButton />
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white text-purple-900 hover:bg-white/10"
+                asChild
+              >
                 <Link href="/explore">Explore Creations</Link>
               </Button>
             </div>
@@ -49,9 +68,12 @@ export default function Home() {
           {/* Key Features Section */}
           <section className="py-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Key Features?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Key Features?
+              </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                We offer you need to create, collaborate, and track AI-generated NFTs
+                We offer you need to create, collaborate, and track AI-generated
+                NFTs
               </p>
             </div>
 
@@ -77,7 +99,9 @@ export default function Home() {
           {/* Technical Details Section */}
           <section className="py-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Technical Implementation</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Technical Implementation
+              </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Built with cutting-edge blockchain technology
               </p>
@@ -91,9 +115,12 @@ export default function Home() {
                       <Layers className="h-8 w-8 text-purple-700" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-medium mb-2">Contract Standard</h3>
+                      <h3 className="text-xl font-medium mb-2">
+                        Contract Standard
+                      </h3>
                       <p className="text-muted-foreground">
-                        ERC-1155 multi-token standard for efficient batch operations and reduced gas costs
+                        ERC-1155 multi-token standard for efficient batch
+                        operations and reduced gas costs
                       </p>
                     </div>
                   </div>
@@ -105,7 +132,8 @@ export default function Home() {
                     <div>
                       <h3 className="text-xl font-medium mb-2">Deployment</h3>
                       <p className="text-muted-foreground">
-                        MultiBaas SDK for seamless contract deployment and management
+                        MultiBaas SDK for seamless contract deployment and
+                        management
                       </p>
                     </div>
                   </div>
@@ -117,7 +145,8 @@ export default function Home() {
                     <div>
                       <h3 className="text-xl font-medium mb-2">Data Storage</h3>
                       <p className="text-muted-foreground">
-                        PNG data, AI prompts, and user info tracked by contract address
+                        PNG data, AI prompts, and user info tracked by contract
+                        address
                       </p>
                     </div>
                   </div>
@@ -127,8 +156,12 @@ export default function Home() {
                       <Wallet className="h-8 w-8 text-purple-700" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-medium mb-2">Payment Options</h3>
-                      <p className="text-muted-foreground">Transaction fees payable with USDC (Circle) or ETH</p>
+                      <h3 className="text-xl font-medium mb-2">
+                        Payment Options
+                      </h3>
+                      <p className="text-muted-foreground">
+                        Transaction fees payable with USDC (Circle) or ETH
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -139,7 +172,9 @@ export default function Home() {
           {/* Supported Chains Section */}
           <section className="py-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Supported Chains</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Supported Chains
+              </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Deploy your NFTs on these high-performance blockchains
               </p>
@@ -164,15 +199,15 @@ export default function Home() {
           {/* CTA Section */}
           <section className="bg-purple-50 w-screen relative left-1/2 right-1/2 -mx-[50vw] p-16 pb-20 text-center mb-0">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold mb-4">Ready to Create Your NFT?</h2>
+              <h2 className="text-3xl font-bold mb-4">
+                Ready to Create Your NFT?
+              </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
                 Start generating unique AI-powered NFTs in seconds
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Button size="lg" asChild>
-                  <Link href="/create">
-                    Get Started
-                  </Link>
+                  <Link href="/create">Get Started</Link>
                 </Button>
               </div>
             </div>
@@ -180,10 +215,18 @@ export default function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+function FeatureCard({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
   return (
     <Card className="border-2 transition-all hover:shadow-md hover:-translate-y-1">
       <CardHeader className="pb-2">
@@ -194,10 +237,20 @@ function FeatureCard({ icon, title, description }: { icon: React.ReactNode; titl
         <p className="text-muted-foreground">{description}</p>
       </CardContent>
     </Card>
-  )
+  );
 }
 
-function ChainCard({ name, description, isTestnet, icon }: { name: string; description: string; isTestnet: boolean; icon: string }) {
+function ChainCard({
+  name,
+  description,
+  isTestnet,
+  icon,
+}: {
+  name: string;
+  description: string;
+  isTestnet: boolean;
+  icon: string;
+}) {
   // Determine the URL based on chain name
   const getChainUrl = () => {
     if (name === "Polygon") {
@@ -213,7 +266,11 @@ function ChainCard({ name, description, isTestnet, icon }: { name: string; descr
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <img src={icon || "/placeholder.svg"} alt={name} className="w-12 h-12 rounded-full" />
+            <img
+              src={icon || "/placeholder.svg"}
+              alt={name}
+              className="w-12 h-12 rounded-full"
+            />
             <CardTitle className="text-2xl">{name}</CardTitle>
           </div>
           {isTestnet && <Badge variant="outline">Testnet</Badge>}
@@ -230,6 +287,5 @@ function ChainCard({ name, description, isTestnet, icon }: { name: string; descr
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }
-
